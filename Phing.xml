@@ -1,0 +1,33 @@
+<project name="make_project" basedir=".." default="build">
+
+    <property name="src_dir" value="protected/" override="false"/>
+    <property name="res_dir" value="public/" override="false"/>
+
+    <target name="clear_cache_dir">
+        <echo>Очищаем директории кэша</echo>
+        <delete>
+            <fileset dir="${res_dir}/assets/">
+                <include name="**"/>
+            </fileset>
+            <fileset dir="${src_dir}/runtime/">
+                <include name="**"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="build" depends="clear_cache_dir">
+    </target>
+
+    <target name="less_exec">
+        <exec command="lessc ${project.basedir}/${src_dir}/${current_file} > ${project.basedir}/${src_dir}/${current_file}.css" />
+    </target>
+
+    <target name="compile_less">
+        <echo>Компиляция .less файлов</echo>
+        <foreach param="current_file" target="less_exec">
+            <fileset dir="${src_dir}/">
+                <include name="**/assets/css/*.less" />
+            </fileset>
+        </foreach>
+    </target>
+</project>
